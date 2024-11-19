@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>blankmod</groupId>
+    <artifactId>blankmod</artifactId>
+    <version>0.0.1</version>
+    <packaging>jar</packaging>
+    <name>Blank Mod</name>
+    <description>Blank mod for STS Modding</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.megacrit.cardcrawl</groupId>
+            <artifactId>slaythespire</artifactId>
+            <version>12-18-2022</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/../lib/desktop-1.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.evacipated.cardcrawl</groupId>
+            <artifactId>ModTheSpire</artifactId>
+            <version>3.30.3</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/../lib/ModTheSpire.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.evacipated.cardcrawl</groupId>
+            <artifactId>BaseMod</artifactId>
+            <version>5.48.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/../lib/BaseMod.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.evacipated.cardcrawl.mod</groupId>
+            <artifactId>stslib</artifactId>
+            <version>2.6.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/../lib/StSLib.jar</systemPath>
+        </dependency>
+
+    </dependencies>
+
+    <properties>
+        <ModID>${project.artifactId}</ModID>
+        <SlayTheSpire.version>12-18-2022</SlayTheSpire.version>
+        <ModTheSpire.version>3.30.3</ModTheSpire.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <buildVersion>${project.version}</buildVersion>
+
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>common-settings</id>
+            <build>
+                <finalName>${project.artifactId}</finalName>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>2.4.2</version>
+                        <executions>
+                            <execution>
+                                <id>${project.artifactId}</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <filters>
+                                        <filter>
+                                            <artifact>${project.groupId}:${project.artifactId}</artifact>
+                                        </filter>
+                                    </filters>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>false</filtering>
+                        <excludes>
+                            <exclude>ModTheSpire.json</exclude>
+                        </excludes>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                        <includes>
+                            <include>ModTheSpire.json</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>copy-jars</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <target>
+                                        <copy file="target/${project.artifactId}.jar" tofile="/home/dandy/.local/share/Steam/steamapps/common/SlayTheSpire/mods/${project.artifactId}.jar"/>
+                                        <copy file="target/${project.artifactId}.jar" tofile="/home/dandy/repos/sts/sts-uploads/${project.artifactId}/content/${project.artifactId}.jar"/>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>remove-debug</id>
+                                <phase>prepare-package</phase>
+                                <configuration>
+                                    <target>
+                                        <delete dir="${basedir}/target/classes/blankmod/debug/"/>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>debug</id>
+            <properties>
+                <buildVersion>${project.version}-debug</buildVersion>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <configuration>
+                                    <target>
+                                        <copy file="target/${project.artifactId}.jar" tofile="/home/dandy/.local/share/Steam/steamapps/common/SlayTheSpire/mods/${project.artifactId}.jar"/>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <executions>
+                            <execution>
+                                <id>Package refactor</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${basedir}/scripts/refactor-mod-id.sh</executable>
+                                    <arguments>${project.artifactId}</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
