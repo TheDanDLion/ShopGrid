@@ -1,5 +1,5 @@
-# BlankMod
-Blank mod for STS modding projects. Should work right out of the gate.
+# Shop Grid
+Customizable shop grid for STS modding projects. Should work right out of the gate.
 
 # Building
 To build with debug features enabled:

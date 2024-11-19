@@ -3,12 +3,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>blankmod</groupId>
-    <artifactId>blankmod</artifactId>
-    <version>0.0.1</version>
+    <groupId>shopgrid</groupId>
+    <artifactId>ShopGrid</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>Blank Mod</name>
-    <description>Blank mod for STS Modding</description>
+    <name>Shop Grid</name>
+    <description>Make the 2x3 shop grid extendable via the API included in this mod.</description>
 
     <dependencies>
         <dependency>
@@ -31,13 +31,6 @@
             <version>5.48.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/../lib/BaseMod.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.evacipated.cardcrawl.mod</groupId>
-            <artifactId>stslib</artifactId>
-            <version>2.6.1</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/../lib/StSLib.jar</systemPath>
         </dependency>
 
     </dependencies>
@@ -122,8 +115,8 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <target>
-                                        <copy file="target/${project.artifactId}.jar" tofile="/home/dandy/.local/share/Steam/steamapps/common/SlayTheSpire/mods/${project.artifactId}.jar"/>
-                                        <copy file="target/${project.artifactId}.jar" tofile="/home/dandy/repos/sts/sts-uploads/${project.artifactId}/content/${project.artifactId}.jar"/>
+                                        <copy file="target/${project.artifactId}-${project.version}.jar" tofile="/home/dandy/.local/share/Steam/steamapps/common/SlayTheSpire/mods/${project.artifactId}.jar"/>
+                                        <copy file="target/${project.artifactId}-${project.version}.jar" tofile="/home/dandy/repos/sts/sts-uploads/${project.artifactId}/content/${project.artifactId}.jar"/>
                                     </target>
                                 </configuration>
                                 <goals>
@@ -135,7 +128,7 @@
                                 <phase>prepare-package</phase>
                                 <configuration>
                                     <target>
-                                        <delete dir="${basedir}/target/classes/blankmod/debug/"/>
+                                        <delete dir="${basedir}/target/classes/shopgrid/debug/"/>
                                     </target>
                                 </configuration>
                                 <goals>

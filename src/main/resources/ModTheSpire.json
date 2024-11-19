@@ -1,10 +1,10 @@
 {
-  "modid": "${project.artifactId}",
-  "name": "${project.name}",
-  "author_list": ["dandylion1740"],
-  "description": "Dandy's blank mod template",
-  "version": "${project.version}",
-  "sts_version": "${SlayTheSpire.version}",
-  "mts_version": "${ModTheSpire.version}",
-  "dependencies": ["basemod", "stslib"]
-}
+    "modid": "shopgrid",
+    "name": "Shop Grid",
+    "author_list": ["dandylion1740"],
+    "description": "Makes the 2x3 shop grid extendable to any size and adds an abstraction and to add custom items. Use this to help standardize placement of custom shop items between mods.",
+    "version": "1.0.0",
+    "sts_version": "12-18-2022",
+    "mts_version": "3.30.3",
+    "dependencies": ["basemod"]
+  }
